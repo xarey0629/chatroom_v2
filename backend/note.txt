@@ -1,0 +1,35 @@
+Backend:
+0. Build up mongoose.model.
+    -> 1. new Schema
+    -> 2. mongoose.model()
+
+1. Build up "schema.graphql".
+    -> 1. type Query, Mutation, Subscription.
+    -> 2. type OutputType.
+    -> 3. input InputType.
+
+2. Build up server.
+    -> 0. Connect to mongoDB.
+    -> 1. createPubSub(), createYoga, createSchema. Be aware of schema, resolvers & context.
+    -> 2. Build up httpServer (default endpoint:/graphql) and wsServer.       
+
+3. Define Resolvers.
+    -> 1. If not a leaf node -> type!
+    -> 2. Don't forget "parent", { ChatBoxModel, pubsub }.
+
+Frontend:
+0. Conntect to port.
+    -> httpLink, wsLink, splitLink, ApolloClient, ApolloProvider.
+
+1. Define Query, Mutation, Subscription by gql`...`
+    -> 1. 複製 HW8's method, define format correctly. Be aware of parameters -> '$'
+    -> 2. export to wait for being used in useQuery, useMutation, etc.
+
+2. useQuery, useMutation in frontend.
+    -> 0. import gql format from "..."
+    -> 0. We use subscribeToMore in useQuery to replace Subscription.
+    -> 1. const { data, loading, subscribeToMore } = useQuery(CHATBOX_QUERY, {variables: {name1: me, name2: friend}});
+    -> 2. const [startChat] = useMutation(CREATE_CHATBOX_MUTATION);
+    -> 3. Active Subscription -> useEffect, define subscribeToMore({})
+    -> 3-1. About updateQuery, check the subscriptionData and return type should be the same.
+    -> 3-2. Access 'data' which is updated now.
